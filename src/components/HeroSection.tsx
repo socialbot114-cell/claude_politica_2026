@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MessageSquare, Zap, Shield, ChevronDown } from 'lucide-react';
+import { MessageSquare, Zap, Shield, ChevronDown, Mic } from 'lucide-react';
 
 export default function HeroSection() {
   return (
@@ -41,7 +41,7 @@ export default function HeroSection() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
         >
           <span className="w-2 h-2 bg-lime rounded-full animate-pulse" />
-          <span className="text-sm text-gray-300">Novo: IA Generativa para Governos</span>
+          <span className="text-sm text-gray-300">Chatbot com IA para Gabinetes</span>
         </motion.div>
 
         {/* Main title */}
@@ -51,9 +51,9 @@ export default function HeroSection() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-4xl md:text-5xl font-bold leading-tight mb-4"
         >
-          Transforme o{' '}
-          <span className="gradient-text">Atendimento</span>{' '}
-          ao Cidadão
+          Modernize o{' '}
+          <span className="gradient-text">Mandato</span>{' '}
+          do Vereador
         </motion.h1>
 
         <motion.p
@@ -62,8 +62,8 @@ export default function HeroSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-gray-400 text-lg mb-8"
         >
-          Chatbots inteligentes que atendem 24/7, reduzem custos em até{' '}
-          <span className="text-lime font-semibold">70%</span> e melhoram a satisfação da população.
+          Atendimento 24h, registro de demandas e dados estratégicos para fortalecer a{' '}
+          <span className="text-lime font-semibold">escuta social</span> e a transparência do gabinete.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -91,8 +91,8 @@ export default function HeroSection() {
         >
           {[
             { icon: Zap, text: 'Respostas Instantâneas', color: 'lime' },
-            { icon: Shield, text: 'LGPD Compliant', color: 'purple' },
-            { icon: MessageSquare, text: 'Multi-canal', color: 'cyan' },
+            { icon: Mic, text: 'Áudio do Vereador', color: 'purple' },
+            { icon: Shield, text: 'LGPD Compliant', color: 'cyan' },
           ].map((item, i) => (
             <motion.span
               key={i}
@@ -124,7 +124,7 @@ export default function HeroSection() {
                     <MessageSquare size={18} className="text-black" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold">Assistente Gov</p>
+                    <p className="text-sm font-semibold">Gabinete Vereador</p>
                     <p className="text-xs text-lime">Online agora</p>
                   </div>
                 </div>
@@ -136,7 +136,7 @@ export default function HeroSection() {
                   transition={{ delay: 1 }}
                   className="bg-gray-800 rounded-2xl rounded-tl-sm p-3 max-w-[85%]"
                 >
-                  <p className="text-xs">Olá! Como posso ajudar você hoje?</p>
+                  <p className="text-xs">Olá! Seja bem-vindo ao gabinete. Como posso ajudar?</p>
                 </motion.div>
 
                 <motion.div
@@ -145,7 +145,7 @@ export default function HeroSection() {
                   transition={{ delay: 1.5 }}
                   className="bg-lime text-black rounded-2xl rounded-tr-sm p-3 max-w-[85%] ml-auto"
                 >
-                  <p className="text-xs">Preciso de segunda via do IPTU</p>
+                  <p className="text-xs">Quero registrar uma demanda sobre iluminação pública</p>
                 </motion.div>
 
                 <motion.div
@@ -154,7 +154,7 @@ export default function HeroSection() {
                   transition={{ delay: 2 }}
                   className="bg-gray-800 rounded-2xl rounded-tl-sm p-3 max-w-[85%]"
                 >
-                  <p className="text-xs">Claro! Vou gerar sua segunda via agora. Informe seu CPF:</p>
+                  <p className="text-xs">Entendi! Vou registrar sua demanda. Qual o endereço do local?</p>
                 </motion.div>
 
                 {/* Typing indicator */}

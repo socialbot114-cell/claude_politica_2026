@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import { Users, Clock, TrendingDown, Star } from 'lucide-react';
+import { MessageSquare, Clock, Smartphone, FileCheck } from 'lucide-react';
 
 interface StatProps {
   value: number;
@@ -65,10 +65,10 @@ function AnimatedStat({ value, suffix, label, icon: Icon, color, delay }: StatPr
 
 export default function StatsSection() {
   const stats = [
-    { value: 70, suffix: '%', label: 'Redução de Custos', icon: TrendingDown, color: 'lime' },
+    { value: 2000, suffix: '', label: 'Mensagens/mês', icon: MessageSquare, color: 'lime' },
     { value: 24, suffix: '/7', label: 'Disponibilidade', icon: Clock, color: 'cyan' },
-    { value: 500, suffix: 'mil', label: 'Atendimentos/mês', icon: Users, color: 'purple' },
-    { value: 98, suffix: '%', label: 'Satisfação', icon: Star, color: 'pink' },
+    { value: 1, suffix: '', label: 'Número Único WhatsApp', icon: Smartphone, color: 'purple' },
+    { value: 100, suffix: '%', label: 'Demandas Registradas', icon: FileCheck, color: 'pink' },
   ];
 
   return (
@@ -82,13 +82,13 @@ export default function StatsSection() {
         className="text-center mb-12"
       >
         <span className="inline-block px-4 py-1.5 rounded-full text-xs font-medium bg-lime/10 text-lime border border-lime/20 mb-4">
-          Resultados Comprovados
+          Capacidade do Plano
         </span>
         <h2 className="text-3xl font-bold mb-3">
-          Números que <span className="gradient-text">Transformam</span>
+          O Que <span className="gradient-text">Está Incluso</span>
         </h2>
         <p className="text-gray-400 max-w-md mx-auto">
-          Veja o impacto real que nossa solução traz para governos estaduais em todo o Brasil.
+          Tudo que seu gabinete precisa para modernizar o atendimento ao cidadão.
         </p>
       </motion.div>
 
