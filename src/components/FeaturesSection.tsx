@@ -4,55 +4,55 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import {
   MessageSquare,
-  Brain,
-  Shield,
+  Mic,
   Smartphone,
+  GitBranch,
+  Users,
   BarChart3,
-  Headphones,
   FileText,
   Building2,
 } from 'lucide-react';
 
 const features = [
   {
-    icon: Brain,
-    title: 'IA Generativa Avançada',
-    description: 'Powered by GPT-4 e Claude, oferecendo respostas naturais e contextualizadas.',
+    icon: MessageSquare,
+    title: 'Atendimento Inteligente',
+    description: 'Interação em linguagem natural, sem menus engessados. Respostas adaptadas ao tom institucional do vereador.',
     color: 'lime',
     gradient: 'from-lime to-cyan',
   },
   {
-    icon: Smartphone,
-    title: 'Multi-canal',
-    description: 'WhatsApp, Telegram, Site, App e todos os canais em uma única plataforma.',
+    icon: Mic,
+    title: 'Mensagem do Vereador',
+    description: 'Áudio gravado pelo próprio vereador acolhendo o cidadão, com texto institucional de apresentação.',
     color: 'purple',
     gradient: 'from-purple to-pink',
   },
   {
-    icon: Shield,
-    title: '100% LGPD',
-    description: 'Dados criptografados e armazenados em servidores brasileiros.',
+    icon: Smartphone,
+    title: 'WhatsApp Oficial',
+    description: 'Um único número oficial do gabinete, centralizando todo o atendimento com identidade clara.',
     color: 'cyan',
     gradient: 'from-cyan to-lime',
   },
   {
-    icon: BarChart3,
-    title: 'Analytics em Tempo Real',
-    description: 'Dashboard completo com métricas de atendimento e satisfação.',
+    icon: GitBranch,
+    title: 'Direcionamento Automático',
+    description: 'Classificação automática da demanda pela IA e encaminhamento para Chefia ou Assessoria do Gabinete.',
     color: 'pink',
     gradient: 'from-pink to-purple',
   },
   {
-    icon: Headphones,
-    title: 'Escalação Inteligente',
-    description: 'Transferência automática para atendentes quando necessário.',
+    icon: Users,
+    title: 'Atendimento Humano',
+    description: 'Quando necessário, transferência para atendente com sistema de fila que evita perda de mensagens.',
     color: 'lime',
     gradient: 'from-lime to-cyan',
   },
   {
-    icon: FileText,
-    title: 'Base de Conhecimento',
-    description: 'Treine o bot com documentos, FAQs e regulamentos do governo.',
+    icon: BarChart3,
+    title: 'Relatórios Estratégicos',
+    description: 'Dados sobre assuntos mais demandados, horários de pico e perfil das demandas para subsidiar o mandato.',
     color: 'purple',
     gradient: 'from-purple to-pink',
   },
@@ -76,11 +76,11 @@ export default function FeaturesSection() {
           Funcionalidades
         </span>
         <h2 className="text-3xl font-bold mb-3">
-          Tudo que sua{' '}
-          <span className="gradient-text">Prefeitura</span> Precisa
+          Tudo que seu{' '}
+          <span className="gradient-text">Gabinete</span> Precisa
         </h2>
         <p className="text-gray-400 max-w-md mx-auto">
-          Uma plataforma completa para revolucionar o atendimento ao cidadão.
+          Uma plataforma completa para modernizar o atendimento e fortalecer a escuta social.
         </p>
       </motion.div>
 
@@ -130,27 +130,23 @@ export default function FeaturesSection() {
         ))}
       </div>
 
-      {/* Government buildings illustration */}
+      {/* Value proposition */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 1, delay: 0.5 }}
-        className="flex justify-center gap-4 mt-12"
+        className="mt-12 text-center"
       >
-        {[1, 2, 3].map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{ y: [0, -5, 0] }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
-            className={`w-16 h-20 rounded-xl bg-gradient-to-b from-gray-800 to-gray-900 flex items-end justify-center pb-2 border border-gray-700`}
-          >
-            <Building2 className="text-gray-600" size={24} />
-          </motion.div>
-        ))}
+        <div className="glass rounded-2xl p-6 max-w-md mx-auto border border-lime/20">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <FileText className="text-lime" size={24} />
+            <h3 className="font-semibold text-lg">Gestão do Mandato</h3>
+          </div>
+          <p className="text-gray-400 text-sm">
+            Não é apenas um chatbot. É uma <span className="text-lime font-semibold">ferramenta de gestão do mandato parlamentar</span> que
+            fortalece a imagem de vereador acessível e mandato moderno.
+          </p>
+        </div>
       </motion.div>
 
       {/* Background decoration */}
