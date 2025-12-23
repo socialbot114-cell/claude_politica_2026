@@ -1,28 +1,29 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { MessageSquare, Instagram, Linkedin, Youtube, ArrowUpRight } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { MessageSquare, Instagram, Linkedin, Youtube, ArrowUpRight, ArrowUp, Send, CheckCircle2 } from 'lucide-react';
 
 const footerLinks = {
-  produto: [
+  Produto: [
     { name: 'Funcionalidades', href: '#features' },
     { name: 'Preços', href: '#pricing' },
     { name: 'Integrações', href: '#integrations' },
     { name: 'API', href: '#api' },
   ],
-  empresa: [
+  Empresa: [
     { name: 'Sobre Nós', href: '#about' },
     { name: 'Carreiras', href: '#careers' },
     { name: 'Blog', href: '#blog' },
     { name: 'Contato', href: '#contact' },
   ],
-  recursos: [
+  Recursos: [
     { name: 'Documentação', href: '#docs' },
     { name: 'Cases de Sucesso', href: '#cases' },
     { name: 'Webinars', href: '#webinars' },
     { name: 'FAQ', href: '#faq' },
   ],
-  legal: [
+  Legal: [
     { name: 'Privacidade', href: '#privacy' },
     { name: 'Termos de Uso', href: '#terms' },
     { name: 'LGPD', href: '#lgpd' },
@@ -37,129 +38,183 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubscribed(true);
+    setEmail('');
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer className="relative pt-16 pb-8 px-4 border-t border-gray-800">
-      {/* Logo and description */}
-      <div className="max-w-md mx-auto mb-12">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-lime to-cyan flex items-center justify-center">
-            <MessageSquare className="text-black" size={20} />
-          </div>
-          <h3 className="text-xl font-bold">
-            <span className="text-lime">Gov</span>
-            <span className="text-white">Chat</span>
-            <span className="text-purple">AI</span>
-          </h3>
-        </div>
-        <p className="text-gray-400 text-sm mb-6">
-          Transformando o atendimento ao cidadão com inteligência artificial.
-          Soluções sob medida para governos estaduais e municipais.
-        </p>
+    <footer ref={containerRef} className="relative pt-24 pb-8 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 animated-gradient-subtle -z-10" />
+      <div className="absolute top-0 left-0 right-0 divider-gradient" />
 
-        {/* Social links */}
-        <div className="flex gap-3">
-          {socialLinks.map((social, i) => (
-            <motion.a
-              key={i}
-              href={social.href}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-10 h-10 rounded-xl glass flex items-center justify-center border border-gray-800 hover:border-lime/50 transition-colors"
-              aria-label={social.label}
-            >
-              <social.icon size={18} className="text-gray-400" />
-            </motion.a>
-          ))}
-        </div>
-      </div>
-
-      {/* Links grid */}
-      <div className="grid grid-cols-2 gap-8 max-w-md mx-auto mb-12">
-        {Object.entries(footerLinks).map(([category, links]) => (
-          <div key={category}>
-            <h4 className="text-sm font-semibold mb-4 capitalize">{category}</h4>
-            <ul className="space-y-2">
-              {links.map((link, i) => (
-                <li key={i}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-gray-400 hover:text-lime transition-colors inline-flex items-center gap-1 group"
-                  >
-                    {link.name}
-                    <ArrowUpRight
-                      size={12}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      {/* Newsletter */}
-      <div className="max-w-md mx-auto mb-12">
-        <div className="glass rounded-2xl p-6 border border-gray-800">
-          <h4 className="font-semibold mb-2">Receba novidades</h4>
-          <p className="text-sm text-gray-400 mb-4">
-            Dicas de IA para governos, cases e atualizações.
-          </p>
-          <form className="flex gap-2">
-            <input
-              type="email"
-              placeholder="Seu email"
-              className="flex-1 px-4 py-3 rounded-xl bg-gray-900 border border-gray-700 focus:border-lime/50 focus:outline-none text-sm placeholder:text-gray-500"
-            />
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              className="px-4 py-3 bg-lime text-black font-medium rounded-xl hover:bg-lime-dark transition-colors"
-            >
-              Assinar
-            </motion.button>
-          </form>
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="max-w-md mx-auto pt-8 border-t border-gray-800">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-          <p>&copy; 2024 GovChatAI. Todos os direitos reservados.</p>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-lime rounded-full animate-pulse" />
-            <span>Sistema operacional</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Back to top button */}
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-lime text-black flex items-center justify-center shadow-lg glow-lime z-50"
-      >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <div className="container-premium">
+        {/* Main Footer Content */}
+        <motion.div
+          initial={{ y: 40, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-16"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 10l7-7m0 0l7 7m-7-7v18"
-          />
-        </svg>
+          {/* Brand Column */}
+          <div className="lg:col-span-4">
+            {/* Logo */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="relative">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-lime to-cyan flex items-center justify-center">
+                  <MessageSquare className="text-black" size={24} />
+                </div>
+                <div className="absolute -inset-1 rounded-xl bg-lime/20 blur-md -z-10" />
+              </div>
+              <span className="font-bold text-2xl tracking-tight">
+                <span className="text-lime">Gov</span>
+                <span className="text-white">Chat</span>
+                <span className="text-purple">AI</span>
+              </span>
+            </div>
+
+            <p className="text-text-secondary leading-relaxed mb-8 max-w-sm">
+              Transformando o atendimento ao cidadão com inteligência artificial. Soluções sob medida para governos estaduais e municipais.
+            </p>
+
+            {/* Social Links */}
+            <div className="flex gap-3">
+              {socialLinks.map((social, i) => (
+                <motion.a
+                  key={i}
+                  href={social.href}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-11 h-11 rounded-xl glass-subtle flex items-center justify-center hover:border-lime/30 transition-all duration-300"
+                  aria-label={social.label}
+                >
+                  <social.icon size={20} className="text-text-secondary" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+
+          {/* Links Grid */}
+          <div className="lg:col-span-5 grid grid-cols-2 md:grid-cols-4 gap-8">
+            {Object.entries(footerLinks).map(([category, links], categoryIndex) => (
+              <motion.div
+                key={category}
+                initial={{ y: 20, opacity: 0 }}
+                animate={isInView ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.1 * categoryIndex }}
+              >
+                <h4 className="text-sm font-semibold text-white mb-4">{category}</h4>
+                <ul className="space-y-3">
+                  {links.map((link, i) => (
+                    <li key={i}>
+                      <a
+                        href={link.href}
+                        className="group text-sm text-text-secondary hover:text-white transition-colors inline-flex items-center gap-1"
+                      >
+                        {link.name}
+                        <ArrowUpRight
+                          size={12}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Newsletter */}
+          <div className="lg:col-span-3">
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={isInView ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="card-premium p-6"
+            >
+              <h4 className="font-semibold text-white mb-2">Receba novidades</h4>
+              <p className="text-sm text-text-secondary mb-4">
+                Dicas de IA para governos, cases e atualizações.
+              </p>
+
+              {!subscribed ? (
+                <form onSubmit={handleSubscribe} className="space-y-3">
+                  <input
+                    type="email"
+                    placeholder="Seu email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full input-premium text-sm"
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    className="w-full py-3 bg-lime text-black font-semibold rounded-xl hover:bg-lime-light transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    <Send size={16} />
+                    Inscrever-se
+                  </motion.button>
+                </form>
+              ) : (
+                <div className="flex items-center gap-2 py-3 text-lime">
+                  <CheckCircle2 size={20} />
+                  <span className="text-sm font-medium">Inscrito com sucesso!</span>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Bottom Bar */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="pt-8 border-t border-border"
+        >
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-text-muted">
+              &copy; 2025 GovChatAI. Todos os direitos reservados.
+            </p>
+
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-lime" />
+              </span>
+              <span className="text-sm text-text-muted">Sistema operacional</span>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Back to Top Button */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.1, y: -2 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 w-14 h-14 rounded-2xl bg-lime text-black flex items-center justify-center shadow-xl glow-lime-soft z-50 transition-all duration-300"
+      >
+        <ArrowUp size={22} />
       </motion.button>
 
-      {/* Background decoration */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-lime/5 rounded-full blur-3xl -z-10" />
+      {/* Decorative Background Elements */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-lime/3 blur-[150px] -z-10" />
     </footer>
   );
 }

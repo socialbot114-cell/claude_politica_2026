@@ -1,174 +1,258 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { Star, Quote, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';
 
 const testimonials = [
   {
-    name: 'Secretário de Tecnologia',
-    role: 'Governo do Estado de SP',
+    name: 'Carlos Eduardo',
+    role: 'Secretário de Tecnologia',
+    organization: 'Governo do Estado de SP',
     avatar: 'SP',
-    quote: 'Reduzimos em 65% as ligações no call center. A população aprovou e nossa equipe agora foca em casos complexos.',
+    quote: 'Reduzimos em 65% as ligações no call center. A população aprovou e nossa equipe agora foca em casos complexos. A implementação foi surpreendentemente rápida.',
     rating: 5,
-    color: 'lime',
+    metrics: { reduction: '65%', satisfaction: '94%' },
+    color: 'lime' as const,
   },
   {
-    name: 'Diretora de Atendimento',
-    role: 'Prefeitura de Belo Horizonte',
+    name: 'Ana Paula Ferreira',
+    role: 'Diretora de Atendimento',
+    organization: 'Prefeitura de Belo Horizonte',
     avatar: 'BH',
-    quote: 'Em 3 meses, o chatbot já atendeu mais de 200 mil cidadãos. A satisfação subiu de 72% para 94%.',
+    quote: 'Em 3 meses, o chatbot já atendeu mais de 200 mil cidadãos. A satisfação subiu de 72% para 94%. Não imaginávamos resultados tão expressivos.',
     rating: 5,
-    color: 'purple',
+    metrics: { reduction: '72%', satisfaction: '94%' },
+    color: 'purple' as const,
   },
   {
-    name: 'Coordenador de TI',
-    role: 'Governo do Estado do PR',
+    name: 'Roberto Mendes',
+    role: 'Coordenador de TI',
+    organization: 'Governo do Estado do PR',
     avatar: 'PR',
-    quote: 'A integração com nossos sistemas legados foi surpreendentemente simples. Estamos expandindo para mais secretarias.',
+    quote: 'A integração com nossos sistemas legados foi surpreendentemente simples. Estamos expandindo para mais secretarias e os resultados são consistentes.',
     rating: 5,
-    color: 'cyan',
+    metrics: { reduction: '58%', satisfaction: '96%' },
+    color: 'cyan' as const,
   },
 ];
 
+const colorClasses = {
+  lime: {
+    bg: 'bg-lime/10',
+    border: 'border-lime/20',
+    text: 'text-lime',
+    avatar: 'from-lime to-cyan',
+  },
+  purple: {
+    bg: 'bg-purple/10',
+    border: 'border-purple/20',
+    text: 'text-purple',
+    avatar: 'from-purple to-pink',
+  },
+  cyan: {
+    bg: 'bg-cyan/10',
+    border: 'border-cyan/20',
+    text: 'text-cyan',
+    avatar: 'from-cyan to-lime',
+  },
+};
+
 export default function TestimonialsSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: '-100px' });
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
 
   const nextTestimonial = () => {
+    setIsAutoPlaying(false);
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
   const prevTestimonial = () => {
+    setIsAutoPlaying(false);
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
+  const currentTestimonial = testimonials[currentIndex];
+  const colors = colorClasses[currentTestimonial.color];
+
   return (
-    <section ref={ref} className="relative py-20 px-4">
-      {/* Section header */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={isInView ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-10"
-      >
-        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-medium bg-lime/10 text-lime border border-lime/20 mb-4">
-          Depoimentos
-        </span>
-        <h2 className="text-3xl font-bold mb-3">
-          Quem <span className="gradient-text">Já Usa</span> Aprova
-        </h2>
-        <p className="text-gray-400 max-w-md mx-auto">
-          Veja o que líderes de governos dizem sobre nossa solução.
-        </p>
-      </motion.div>
+    <section ref={containerRef} className="relative section-premium overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 animated-gradient-subtle -z-10" />
 
-      {/* Testimonial card */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="max-w-md mx-auto"
-      >
-        <div className="relative">
-          {/* Main card */}
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className={`glass rounded-3xl p-6 border border-${testimonials[currentIndex].color}/20`}
-          >
-            {/* Quote icon */}
-            <div className={`w-10 h-10 rounded-xl bg-${testimonials[currentIndex].color}/10 flex items-center justify-center mb-4`}>
-              <Quote className={`text-${testimonials[currentIndex].color}`} size={20} />
-            </div>
+      <div className="container-premium">
+        {/* Section Header */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-20"
+        >
+          <span className="badge-premium mb-6 inline-flex">
+            <MessageSquare size={14} />
+            Depoimentos
+          </span>
 
-            {/* Quote text */}
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              &ldquo;{testimonials[currentIndex].quote}&rdquo;
-            </p>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-balance">
+            Quem{' '}
+            <span className="gradient-text">Já Usa</span>{' '}
+            Aprova
+          </h2>
 
-            {/* Rating */}
-            <div className="flex gap-1 mb-4">
-              {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                <Star key={i} className="text-yellow-500 fill-yellow-500" size={16} />
-              ))}
-            </div>
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
+            Veja o que líderes de governos em todo o Brasil dizem sobre nossa solução.
+          </p>
+        </motion.div>
 
-            {/* Author */}
-            <div className="flex items-center gap-3">
-              <div
-                className={`w-12 h-12 rounded-full bg-gradient-to-br from-${testimonials[currentIndex].color} to-cyan flex items-center justify-center text-black font-bold`}
+        {/* Testimonial Card */}
+        <motion.div
+          initial={{ y: 40, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="relative">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className={`card-premium p-8 md:p-12 border ${colors.border}`}
               >
-                {testimonials[currentIndex].avatar}
+                <div className="grid md:grid-cols-[1fr,auto] gap-8 items-center">
+                  {/* Content */}
+                  <div>
+                    {/* Quote Icon */}
+                    <div className={`w-12 h-12 rounded-2xl ${colors.bg} flex items-center justify-center mb-6`}>
+                      <Quote className={colors.text} size={22} />
+                    </div>
+
+                    {/* Quote Text */}
+                    <blockquote className="text-xl md:text-2xl text-white/90 leading-relaxed mb-8 font-light">
+                      &ldquo;{currentTestimonial.quote}&rdquo;
+                    </blockquote>
+
+                    {/* Rating */}
+                    <div className="flex gap-1 mb-6">
+                      {[...Array(currentTestimonial.rating)].map((_, i) => (
+                        <Star key={i} className="text-yellow-500 fill-yellow-500" size={18} />
+                      ))}
+                    </div>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-4">
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colors.avatar} flex items-center justify-center text-black font-bold text-lg`}>
+                        {currentTestimonial.avatar}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white text-lg">{currentTestimonial.name}</p>
+                        <p className="text-text-secondary">{currentTestimonial.role}</p>
+                        <p className="text-text-muted text-sm">{currentTestimonial.organization}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metrics */}
+                  <div className="hidden md:flex flex-col gap-4">
+                    <div className={`p-6 rounded-2xl ${colors.bg} border ${colors.border} text-center`}>
+                      <div className={`text-4xl font-bold ${colors.text} mb-1`}>
+                        {currentTestimonial.metrics.reduction}
+                      </div>
+                      <div className="text-sm text-text-muted">Redução de custos</div>
+                    </div>
+                    <div className={`p-6 rounded-2xl ${colors.bg} border ${colors.border} text-center`}>
+                      <div className={`text-4xl font-bold ${colors.text} mb-1`}>
+                        {currentTestimonial.metrics.satisfaction}
+                      </div>
+                      <div className="text-sm text-text-muted">Satisfação</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Navigation */}
+            <div className="flex justify-center items-center gap-6 mt-8">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={prevTestimonial}
+                className="w-12 h-12 rounded-full glass-subtle flex items-center justify-center hover:border-lime/30 transition-all duration-300"
+              >
+                <ChevronLeft size={22} />
+              </motion.button>
+
+              {/* Dots */}
+              <div className="flex items-center gap-3">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setIsAutoPlaying(false);
+                      setCurrentIndex(i);
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === currentIndex
+                        ? 'w-8 bg-lime'
+                        : 'w-2 bg-white/20 hover:bg-white/40'
+                    }`}
+                  />
+                ))}
               </div>
-              <div>
-                <p className="font-semibold">{testimonials[currentIndex].name}</p>
-                <p className="text-sm text-gray-400">{testimonials[currentIndex].role}</p>
-              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={nextTestimonial}
+                className="w-12 h-12 rounded-full glass-subtle flex items-center justify-center hover:border-lime/30 transition-all duration-300"
+              >
+                <ChevronRight size={22} />
+              </motion.button>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Navigation */}
-          <div className="flex justify-center gap-4 mt-6">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={prevTestimonial}
-              className="w-10 h-10 rounded-full glass flex items-center justify-center border border-gray-700 hover:border-lime/50 transition-colors"
+        {/* Trust Badges */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="flex flex-wrap justify-center gap-4 mt-16"
+        >
+          {[
+            { value: '+50', label: 'Prefeituras' },
+            { value: '+10', label: 'Estados' },
+            { value: '5M+', label: 'Atendimentos' },
+          ].map((badge, i) => (
+            <div
+              key={i}
+              className="px-6 py-3 glass-subtle rounded-full"
             >
-              <ChevronLeft size={20} />
-            </motion.button>
-
-            {/* Dots */}
-            <div className="flex items-center gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentIndex(i)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    i === currentIndex
-                      ? 'w-6 bg-lime'
-                      : 'bg-gray-600 hover:bg-gray-500'
-                  }`}
-                />
-              ))}
+              <span className="text-lime font-bold">{badge.value}</span>{' '}
+              <span className="text-text-secondary">{badge.label}</span>
             </div>
+          ))}
+        </motion.div>
+      </div>
 
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={nextTestimonial}
-              className="w-10 h-10 rounded-full glass flex items-center justify-center border border-gray-700 hover:border-lime/50 transition-colors"
-            >
-              <ChevronRight size={20} />
-            </motion.button>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Trust badges */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={isInView ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="flex flex-wrap justify-center gap-4 mt-12"
-      >
-        {['+50 Prefeituras', '+10 Estados', '5M+ Atendimentos'].map((badge, i) => (
-          <div
-            key={i}
-            className="px-4 py-2 rounded-full glass text-sm text-gray-400 border border-gray-800"
-          >
-            <span className="text-lime font-semibold">{badge.split(' ')[0]}</span>{' '}
-            {badge.split(' ').slice(1).join(' ')}
-          </div>
-        ))}
-      </motion.div>
-
-      {/* Background decoration */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple/5 rounded-full blur-3xl -z-10" />
+      {/* Decorative Divider */}
+      <div className="absolute bottom-0 left-0 right-0 divider-gradient" />
     </section>
   );
 }
